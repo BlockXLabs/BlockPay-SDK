@@ -1,0 +1,64 @@
+{% extends 'base.j2' %}
+
+{% block body %}
+    <div class="container login-container">
+      <div class="row align-items-center h-100">
+        <div
+         class="col d-flex flex-column align-items-center justify-content-center col-md-4 offset-md-4
+        >
+
+          {% for message in get_flashed_messages() %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+          {% endfor %}
+
+          <div class="container overflow-auto px-5">
+            <div class="row">
+              <div class="col transactions-title">
+                <h1 class="title-text">Blockxpay Payment</h1>
+              </div>
+            </div>
+
+          <form class="d-flex flex-column align-items-center" method="post">
+
+            <label for="invoice_id">Invoice id</label>
+            <input
+              placeholder="Invoice id"
+              type="text"
+              name="invoice_id"
+              class="form-control"
+              id="invoice_id"
+            /><br />
+            <label for="amount">Amount</label>
+            <input
+              placeholder="amount"
+              type="number"
+              name="amount"
+              min="0"
+              step="0.000001"
+              class="form-control"
+              id="amount"
+            /><br />
+            <label for="currency">Convert To For Processing </label>
+
+            <select name="currency" id="currency" class="currency">
+              <option value="USDT">USDT</option>
+              <option value="USDC">USDC</option>
+            </select><br />
+            <button type="submit" class="btn button payment-request">Pay</button>
+          </form>
+        </div>
+      </div>
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{#<script>
+$(function(){
+  $('button.payment-request').click(function(){
+    let destination = $('.currency').val().trim().split(' ')[0];
+    let amount = $('input[name="amount"]').val();
+    let invoice_id = $('input[name="invoice_id"]').val();
+    let apiUrl = $('input[name="api-url"]').val();
+    let external_id = $('input[name="external_id"]').val();
+  });
+});
+</script>#}
+{% endblock %}

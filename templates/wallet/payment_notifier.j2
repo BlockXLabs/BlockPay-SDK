@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockxpay</title>
+    <!-- Include Socket.IO -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const queryString = window.location.search;
+
+            // Create an instance of URLSearchParams
+            const urlParams = new URLSearchParams(queryString);
+
+            // Get individual query parameters
+            const wallet = urlParams.get('wallet');
+            const invoice_id = urlParams.get('invoice_id');
+
+            // Connect to the WebSocket server
+            var socket = io.connect('http://' + document.domain + ':' + location.port, { query: { wallet, invoice_id } });
+
+            // Send a message to the server
+            socket.emit('message', 'Hello, Server!');
+
+            // Listen for a response from the server
+            socket.on('notification', function(data) {
+                // Update an element on the page dynamically
+                document.getElementById('response').innerText = data.response_data.status;
+            });
+        });
+    </script>
+</head>
+{% block body %}
+<body>
+<div class="container login-container">
+  <div class="d-flex flex-column align-items-center" style="display: flex; flex-direction:column; gap: 2vh">
+    <p>Payment status: <span id="response">{{status}}</span></p>
+    <p>Invoice NO: <span id="invoice-id">{{invoice_id}}</span></p>
+    <p>Send <b><span id="invoice-amount">{{ amount }}</span></b> USDT to wallet address: <b>{{ wallet }}</b></p>
+  </div>
+</div>
+</body>
+{% endblock %}
+</html>
